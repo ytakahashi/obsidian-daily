@@ -50,6 +50,7 @@ Then call `obsidian daily:append` and pass that exact string as the `content` ar
 
 Do not change the Markdown content to fit a specific shell example.
 Use whatever argument passing or escaping mechanism is appropriate for the current execution environment so that the exact content is preserved.
+The mechanism may vary by agent or shell. For example, an agent may use direct argument escaping, `printf`, or a temporary file, as long as the exact Markdown content is preserved.
 
 ## Workflow
 
