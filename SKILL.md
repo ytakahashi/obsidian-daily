@@ -9,11 +9,7 @@ Use this skill when the user wants the current chat summarized into today's Obsi
 
 ## Goal
 
-Append a short Markdown summary of the current chat to the daily note with:
-
-```sh
-obsidian daily:append content="..."
-```
+Append a short Markdown summary of the current chat to the daily note with `obsidian daily:append`.
 
 Keep the summary compact. Do not write a long transcript.
 
@@ -40,50 +36,57 @@ Rules:
 - Omit speculative side discussions unless they materially affected the work.
 - After appending to the daily note, show the same Markdown content in the chat reply.
 
+## Execution Rule
+
+Construct the Markdown content as an exact string value.
+
+The content must:
+
+- start with `\n`
+- use `### {repository name}` as the heading
+- include only a concise summary of the recent work
+
+Then call `obsidian daily:append` and pass that exact string as the `content` argument.
+
+Do not change the Markdown content to fit a specific shell example.
+Use whatever argument passing or escaping mechanism is appropriate for the current execution environment so that the exact content is preserved.
+
 ## Workflow
 
 1. Review the current chat and identify the main items worth recording.
 2. Limit the content to a few bullets that can be scanned quickly later.
-3. Build Markdown with explicit `\n` newlines for the CLI argument, starting with a leading `\n`.
-4. Append it with `obsidian daily:append content="..."`.
+3. Build the exact Markdown string, starting with a leading `\n`.
+4. Call `obsidian daily:append` and pass that exact value as `content`.
 5. Display the appended Markdown content in the chat so the user can review exactly what was recorded.
 
-Example:
+Exact content example:
 
-```sh
-obsidian daily:append content="\n### obsidian-daily\n\n- Skill creation\n  - Added a SKILL.md to append chat summaries to the daily note\n- Summary rules\n  - Limited long-running chats to roughly the most recent day of work"
-```
-
-If the content contains backticks or other special characters that the shell may interpret, assign the value to `OBSIDIAN_DAILY_CONTENT` first and pass it by reference. Use single quotes for the common case:
-
-```sh
-OBSIDIAN_DAILY_CONTENT='\n### obsidian-daily\n\n- Fixed `someFunc` bug\n  - Root cause identified'
-obsidian daily:append content="$OBSIDIAN_DAILY_CONTENT"
-```
-
-If the content also contains single quotes or becomes hard to escape, use a quoted heredoc:
-
-```sh
-OBSIDIAN_DAILY_CONTENT="$(cat <<'EOF'
+```md
 \n### obsidian-daily
 
-- Fixed `someFunc` bug
-  - Root cause identified
-EOF
-)"
-obsidian daily:append content="$OBSIDIAN_DAILY_CONTENT"
+- Skill creation
+  - Added a SKILL.md to append chat summaries to the daily note
+- Summary rules
+  - Limited long-running chats to roughly the most recent day of work
+- Code update
+  - Adjusted `README.md` and `SKILL.md` examples
+```
+
+One possible shell example:
+
+```sh
+obsidian daily:append content="\n### obsidian-daily\n\n- Skill creation\n  - Added a SKILL.md to append chat summaries to the daily note\n- Summary rules\n  - Limited long-running chats to roughly the most recent day of work\n- Code update\n  - Adjusted \`README.md\` and \`SKILL.md\` examples"
 ```
 
 ## CLI Notes
 
 - `content` is required for `daily:append`.
 - Start `content` with `\n`.
-- Use `\n` for multiline Markdown in the CLI argument.
-- If the content contains backticks or other shell-special characters, assign the value to `OBSIDIAN_DAILY_CONTENT` with single quotes and pass it as `content="$OBSIDIAN_DAILY_CONTENT"` to avoid shell interpretation.
-- If the content also contains single quotes or becomes hard to escape, use a quoted heredoc.
+- Preserve the exact Markdown content when passing it to `content`.
+- Argument quoting and escaping are environment-specific. Choose a method that preserves the exact content in the current agent or shell.
 - If the working directory is not the target vault, specify the vault explicitly before the command.
 
-Example:
+One possible shell example:
 
 ```sh
 obsidian vault="My Vault" daily:append content="\n### repo\n\n- Summary\n  - Work completed"
