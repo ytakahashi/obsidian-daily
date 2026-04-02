@@ -54,11 +54,33 @@ Example:
 obsidian daily:append content="\n### obsidian-daily\n\n- Skill creation\n  - Added a SKILL.md to append chat summaries to the daily note\n- Summary rules\n  - Limited long-running chats to roughly the most recent day of work"
 ```
 
+If the content contains backticks or other special characters that the shell may interpret, assign the value to `OBSIDIAN_DAILY_CONTENT` first and pass it by reference. Use single quotes for the common case:
+
+```sh
+OBSIDIAN_DAILY_CONTENT='\n### obsidian-daily\n\n- Fixed `someFunc` bug\n  - Root cause identified'
+obsidian daily:append content="$OBSIDIAN_DAILY_CONTENT"
+```
+
+If the content also contains single quotes or becomes hard to escape, use a quoted heredoc:
+
+```sh
+OBSIDIAN_DAILY_CONTENT="$(cat <<'EOF'
+\n### obsidian-daily
+
+- Fixed `someFunc` bug
+  - Root cause identified
+EOF
+)"
+obsidian daily:append content="$OBSIDIAN_DAILY_CONTENT"
+```
+
 ## CLI Notes
 
 - `content` is required for `daily:append`.
 - Start `content` with `\n`.
 - Use `\n` for multiline Markdown in the CLI argument.
+- If the content contains backticks or other shell-special characters, assign the value to `OBSIDIAN_DAILY_CONTENT` with single quotes and pass it as `content="$OBSIDIAN_DAILY_CONTENT"` to avoid shell interpretation.
+- If the content also contains single quotes or becomes hard to escape, use a quoted heredoc.
 - If the working directory is not the target vault, specify the vault explicitly before the command.
 
 Example:
