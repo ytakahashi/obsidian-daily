@@ -24,6 +24,8 @@ Format the appended content like this:
   - Work completed
 - Summary 2
   - Follow-up or decision
+
+Agent: {agent name}
 ```
 
 Rules:
@@ -34,6 +36,7 @@ Rules:
 - Capture outcomes, fixes, decisions, or investigations, not the full conversation.
 - If the chat has continued across multiple days, summarize only the most recent roughly one day of work.
 - Omit speculative side discussions unless they materially affected the work.
+- Add a final line in the appended block that identifies which AI agent wrote it, for example `Agent: Codex`, `Agent: Claude Code`, `Agent: Antigravity`, or `Agent: Cursor`.
 - After appending to the daily note, show the same Markdown content in the chat reply.
 
 ## Execution Rule
@@ -45,6 +48,7 @@ The content must:
 - start with `\n`
 - use `### {repository name}` as the heading
 - include only a concise summary of the recent work
+- end with a final `Agent: {agent name}` line
 
 Then call `obsidian daily:append` and pass that exact string as the `content` argument.
 
@@ -56,9 +60,10 @@ The mechanism may vary by agent or shell. For example, an agent may use direct a
 
 1. Review the current chat and identify the main items worth recording.
 2. Limit the content to a few bullets that can be scanned quickly later.
-3. Build the exact Markdown string, starting with a leading `\n`.
-4. Call `obsidian daily:append` and pass that exact value as `content`.
-5. Display the appended Markdown content in the chat so the user can review exactly what was recorded.
+3. Add the current AI agent name as the final line, such as `Agent: Codex`, `Agent: Claude Code`, `Agent: Antigravity`, or `Agent: Cursor`.
+4. Build the exact Markdown string, starting with a leading `\n`.
+5. Call `obsidian daily:append` and pass that exact value as `content`.
+6. Display the appended Markdown content in the chat so the user can review exactly what was recorded.
 
 Exact content example:
 
@@ -71,12 +76,14 @@ Exact content example:
   - Limited long-running chats to roughly the most recent day of work
 - Code update
   - Adjusted `README.md` and `SKILL.md` examples
+
+Agent: Codex
 ```
 
 One possible shell example:
 
 ```sh
-obsidian daily:append content="\n### obsidian-daily\n\n- Skill creation\n  - Added a SKILL.md to append chat summaries to the daily note\n- Summary rules\n  - Limited long-running chats to roughly the most recent day of work\n- Code update\n  - Adjusted \`README.md\` and \`SKILL.md\` examples"
+obsidian daily:append content="\n### obsidian-daily\n\n- Skill creation\n  - Added a SKILL.md to append chat summaries to the daily note\n- Summary rules\n  - Limited long-running chats to roughly the most recent day of work\n- Code update\n  - Adjusted \`README.md\` and \`SKILL.md\` examples\n\nAgent: Codex"
 ```
 
 ## CLI Notes
@@ -90,5 +97,5 @@ obsidian daily:append content="\n### obsidian-daily\n\n- Skill creation\n  - Add
 One possible shell example:
 
 ```sh
-obsidian vault="My Vault" daily:append content="\n### repo\n\n- Summary\n  - Work completed"
+obsidian vault="My Vault" daily:append content="\n### repo\n\n- Summary\n  - Work completed\n\nAgent: Codex"
 ```
