@@ -2,7 +2,7 @@
 
 `obsidian-daily` is an agent skill for appending a concise summary of the current AI chat to today's Obsidian daily note.
 
-The skill is intended for repository work logs such as implementation, investigation, fixes, and decisions. It writes a short Markdown summary through the Obsidian CLI with `obsidian daily:append content="..."` instead of storing the full conversation.
+The skill is intended for repository work logs such as implementation, investigation, fixes, and decisions. It writes a short Markdown summary through the Obsidian CLI with `obsidian daily:append content="..."` instead of storing the full conversation. If the CLI cannot be executed (e.g. agent running in a background environment without GUI access), it falls back to outputting the Markdown block in the chat for the user to manually copy.
 
 ## Summary format
 

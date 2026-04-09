@@ -52,6 +52,8 @@ The content must:
 
 Then call `obsidian daily:append` and pass that exact string as the `content` argument.
 
+If the `obsidian` CLI command fails, hangs, or cannot be executed because the AI Agent is running in a restricted background environment without GUI access, do not attempt to write directly to the file. Instead, simply output the exact Markdown string in a code block in the chat response so the user can manually copy and paste it into their daily note.
+
 Do not change the Markdown content to fit a specific shell example.
 Use whatever argument passing or escaping mechanism is appropriate for the current execution environment so that the exact content is preserved.
 The mechanism may vary by agent or shell. For example, an agent may use direct argument escaping, `printf`, or a temporary file, as long as the exact Markdown content is preserved.
@@ -64,6 +66,7 @@ The mechanism may vary by agent or shell. For example, an agent may use direct a
 4. Build the exact Markdown string, starting with a leading `\n`.
 5. Call `obsidian daily:append` and pass that exact value as `content`.
 6. Display the appended Markdown content in the chat so the user can review exactly what was recorded.
+7. If the CLI command execution is unavailable or fails due to environment restrictions (e.g., hanging in a background process), explicitly state this to the user and present the Markdown content in a code block for manual copying.
 
 Exact content example:
 
